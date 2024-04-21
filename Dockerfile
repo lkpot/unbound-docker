@@ -34,7 +34,8 @@ RUN ./configure \
       --with-pidfile="" \
       --with-libevent \
       --with-pthreads \
-      --enable-dnstap && \
+      --enable-dnstap \
+      --with-rootkey-file=/var/lib/unbound/root.key && \
     make -j "$(nproc)" && \
     make install DESTDIR=/install
 
@@ -49,9 +50,13 @@ RUN apt-get update && \
     apt-get install -y \
       ca-certificates \
       libevent-2.1-7 \
+      libexpat1 \
       libprotobuf-c1 && \
     rm -rf /var/lib/apt/lists/* && \
-    useradd --system -s /usr/sbin/nologin unbound
+    useradd --system -s /usr/sbin/nologin unbound && \
+    mkdir -p /var/lib/unbound && \
+    (unbound-anchor -a /var/lib/unbound/root.key || :) && \
+    chown -R unbound: /var/lib/unbound
 
 USER unbound
 
