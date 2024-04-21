@@ -16,6 +16,7 @@ RUN apt-get update && \
       bison \
       build-essential \
       flex \
+      libcap2-bin \
       libssl-dev \
       libevent-dev \
       libexpat1-dev \
@@ -37,6 +38,9 @@ RUN ./configure \
     make -j "$(nproc)" && \
     make install DESTDIR=/install
 
+# Add NET_BIND_SERVICE capability
+RUN setcap 'cap_net_bind_service=+ep' /install/usr/sbin/unbound
+
 FROM debian:bookworm-slim
 
 COPY --from=build /install /
@@ -46,7 +50,9 @@ RUN apt-get update && \
       ca-certificates \
       libevent-2.1-7 \
       libprotobuf-c1 && \
-    rm -rf /vair/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists/* && \
     useradd --system -s /usr/sbin/nologin unbound
+
+USER unbound
 
 ENTRYPOINT [ "unbound", "-d" ]
