@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim as source
 
-ENV VERSION=1.19.3 \
-    CHECKSUM=65494e69207fc64edf04fd1c2a42c31a3f350c3b74664af20148bcaa2e1e5d82
+ENV VERSION=1.20.0 \
+    CHECKSUM=e84d56ea1990abc7e8f1ee1954f3aa504bff0d382efbc9ec172db50770789911
 
 WORKDIR /source
 ADD --checksum="sha256:${CHECKSUM}" "https://github.com/NLnetLabs/unbound/archive/refs/tags/release-${VERSION}.tar.gz" .
