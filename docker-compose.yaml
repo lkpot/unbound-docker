@@ -1,10 +1,12 @@
-services:
   unbound:
     container_name: unbound
 
-    image: lkpot/unbound:latest
+    image: lkpot/unbound:1.24.0
 
-    network_mode: host
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8953:8953/tcp"
 
     cap_drop:
       - ALL
@@ -12,10 +14,7 @@ services:
     cap_add:
       - NET_BIND_SERVICE
 
-    expose:
-      - "53"
-
     volumes:
-      - ./etc-unbound:/etc/unbound
+      - ./unbound:/etc/unbound
 
     restart: unless-stopped
