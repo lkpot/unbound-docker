@@ -1,7 +1,8 @@
+services:
   unbound:
     container_name: unbound
 
-    image: lkpot/unbound:1.24.0
+    image: lkpot/unbound:1.25.0
 
     ports:
       - "53:53/tcp"
