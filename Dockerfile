@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim AS source
 
-ENV VERSION=1.25.0 \
-    CHECKSUM=062a6eda723fe2f041bee4079b76981569f1d12e066bbd74800242fc1ebddec7
+ENV VERSION=1.25.1 \
+    CHECKSUM=0fe8b6277b0959cfd17562debac0aa5f71e0b02dc4ffa9c60271c583edab586f
 
 WORKDIR /source
 ADD --checksum="sha256:${CHECKSUM}" "https://nlnetlabs.nl/downloads/unbound/unbound-${VERSION}.tar.gz" .
@@ -15,6 +15,7 @@ RUN apt-get update && \
     apt-get install -y \
       bison \
       build-essential \
+      pkg-config \
       flex \
       libcap2-bin \
       libssl-dev \
